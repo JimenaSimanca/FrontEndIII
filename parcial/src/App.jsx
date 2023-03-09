@@ -1,34 +1,53 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
+import Card from './Components/Card'
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+const App = () => {
+  const [peli, setPeli] = useState({
+    pelicula: "",
+    actor: "",
+  });
+  const [show, setShow] = useState(false);
+  const [err, setErr] = useState(false);
+const handleSubmit = (event) => {
+    event.preventDefault();
+if (
+      peli.pelicula.length >= 3 &&
+      peli.pelicula.charAt(0) != " " &&
+      peli.actor.length >= 6
+    ) {
+      setShow(true);
+      setErr(false);
+    } else {
+      setShow(false);
+      setErr(true);
+    }
+return (
+    <div className="form">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={peli.pelicula}
+          onChange={(e) => setPeli({ ...peli, pelicula: e.target.value })}
+          placeholder="Ingrese su pelicula favorita"
+        ></input>
+        <br></br>
+        <input
+          type="text"
+          value={peli.actor}
+          onChange={(e) => setPeli({ ...peli, actor: e.target.value })}
+          placeholder="Ingrese su actor favorito"
+        ></input>
+        <br></br>
+        <button>Enviar</button>
+      </form>
+      {err ? (
+        <h3 className="msj">
+          "Porfi revisa que todo este ok"
+        </h3>
+      ) : null}
+      {show && <Card pelicula={peli.pelicula} actor={peli.actor} />}
     </div>
-  )
-}
-
-export default App
+  );
+}};
+export default App;
